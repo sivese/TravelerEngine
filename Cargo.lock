@@ -6,9 +6,7 @@ version = 3
 name = "Traveler"
 version = "0.1.0"
 dependencies = [
- "env_logger",
- "log",
- "sdl2",
+ "traveler_1970",
 ]
 
 [[package]]
@@ -193,6 +191,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff1bc3d3f05aff0403e8ac0d92ced918ec05b666a43f83297ccef5bea8a3d449"
 dependencies = [
  "winapi-util",
+]
+
+[[package]]
+name = "traveler_1970"
+version = "0.0.1"
+dependencies = [
+ "env_logger",
+ "log",
+ "sdl2",
 ]
 
 [[package]]

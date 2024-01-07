@@ -1,3 +1,3 @@
 #![warn(missing_docs)]
-mod pong;
+pub mod pong;
 mod app;

@@ -2,8 +2,8 @@
 name = "Traveler"
 version = "0.1.0"
 edition = "2021"
+categories = [ "game-engines", "gui" ]
+description = "Time traveling through games in each ages"
 
 [dependencies]
-env_logger = "0.10"
-log = "0.4"
-sdl2 = { version = "0.36.0", features = ["ttf", "image", "gfx", "mixer"] }
+traveler_1970 = { path="crates/traveler_1970" }
