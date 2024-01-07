@@ -7,6 +7,7 @@ homepage = ""
 license = "MIT"
 
 [dependencies]
+test-log = "0.2"
 env_logger = "0.10"
 log = "0.4"
 sdl2 = { version = "0.36.0", features = ["ttf", "image", "mixer"] }
