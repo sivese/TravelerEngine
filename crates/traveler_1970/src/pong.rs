@@ -4,10 +4,12 @@ extern crate sdl2;
 use std::{print, println};
 
 use log::{ debug, error, info, Level };
-use sdl2::{ render::Canvas, video::Window, pixels::Color, Sdl, event::Event };
+use sdl2::{ render::Canvas, video::Window, pixels::Color, Sdl, event::Event, keyboard::Keycode, sys::Time, TimerSubsystem };
 
 const ATARI_WIDTH:u32= 160;
 const ATARI_HEIGHT:u32 = 192;
+
+const TARGET_FRAME:u32 = 24;
 
 struct Game {
     context : Sdl,
@@ -93,6 +95,9 @@ fn game_loop(mut game : Game) {
                     println!("timestamp -> {}", timestamp);
                     break 'run 
                 },
+                Event::KeyDown { keycode: Some(Keycode::Left), .. } => {
+
+                }
                 _ => { }
             }
         }
