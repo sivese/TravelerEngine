@@ -5,15 +5,33 @@ use std::{print, println};
 
 use log::{ debug, error, info, Level };
 use sdl2::{ render::Canvas, video::Window, pixels::Color, Sdl, event::Event, keyboard::Keycode, sys::Time, TimerSubsystem };
+use sdl2::messagebox::{ButtonData, MessageBoxButtonFlag, MessageBoxFlag, show_message_box};
+use sdl2::sys::SDL_Rect;
+use sdl2::rect::Rect;
+use crate::pong::Stage::TITLE;
 
 const ATARI_WIDTH:u32= 160;
 const ATARI_HEIGHT:u32 = 192;
 
+const PONG_WIDTH:u32= 858;
+const PONG_HEIGHT:u32 = 525;
+
 const TARGET_FRAME:u32 = 24;
+
+enum Stage {
+    TITLE,
+    MAIN,
+}
 
 struct Game {
     context : Sdl,
     canvas : Canvas<Window>,
+    stage : Stage,
+}
+
+struct Round {
+    left_score  : u32,
+    right_score : u32,
 }
 
 fn init() -> Game {
@@ -39,7 +57,7 @@ fn init() -> Game {
         }
     };
 
-    let win_result = video_subsystem.window("Pong", ATARI_WIDTH * 3, ATARI_HEIGHT * 3)
+    let win_result = video_subsystem.window("Pong", PONG_WIDTH, PONG_HEIGHT)
         .position_centered()
         .opengl()
         .build();
@@ -70,14 +88,23 @@ fn init() -> Game {
     Game {
         context : context,
         canvas : canvas,
+        stage : TITLE,
     }
 }
 
 fn game_loop(mut game : Game) {
     let canvas = &mut (game.canvas);
 
-    canvas.set_draw_color(Color::RGB(255, 0, 0));
+    canvas.set_draw_color(Color::RGB(0, 0, 0));
     canvas.clear();
+    canvas.present();
+
+    let texture_creator = canvas.texture_creator();
+    canvas.set_draw_color(Color::WHITE);
+
+    let rect = Rect::new(100, 100, 30, 30);
+
+    canvas.fill_rect(rect).unwrap();
     canvas.present();
 
     let ep_result = game.context
@@ -93,10 +120,36 @@ fn game_loop(mut game : Game) {
             match ev {
                 Event::Quit { timestamp } => { 
                     println!("timestamp -> {}", timestamp);
-                    break 'run 
-                },
-                Event::KeyDown { keycode: Some(Keycode::Left), .. } => {
 
+                    let res = show_message_box(
+                        MessageBoxFlag::INFORMATION,
+                        vec![
+                            ButtonData {
+                                flags: MessageBoxButtonFlag::ESCAPEKEY_DEFAULT,
+                                button_id: 2,
+                                text: "No",
+                            },
+                            ButtonData {
+                                flags: MessageBoxButtonFlag::RETURNKEY_DEFAULT,
+                                button_id: 1,
+                                text: "Yes",
+                            },
+                        ].as_slice(),
+                        "PONG",
+                        "Do you want to quit PONG?",
+                        None,
+                        None,
+                    );
+
+                    break 'run
+                },
+                Event::KeyDown { keycode, .. } => {
+                    let code = match keycode {
+                        Some(key) => key,
+                        None => panic!("Failed to get key code!"),
+                    };
+
+                    if code == Keycode::Left { println!("Left key pressed"); }
                 }
                 _ => { }
             }
