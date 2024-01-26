@@ -33,7 +33,7 @@ impl Screen {
 }
 
 //
-static MAP : [[u32; Screen::WIDTH]; Screen::HEIGHT] = [[0; Screen::WIDTH]; Screen::HEIGHT];
+static MAP : [[u32; Screen::WIDTH]; Screen::HEIGHT] = [[1; Screen::WIDTH]; Screen::HEIGHT];
 
 struct Game {
     context : Sdl,
@@ -192,13 +192,16 @@ fn main_update(key : Keycode) {
 }
 
 fn draw(canvas : &mut Canvas<Window>) {
-    for x in 0..Screen::WIDTH {
-        for y in 0..Screen::HEIGHT {
+    for x in 0..MAP.len() {
+        for y in 0..MAP[0].len() {
             if MAP[x][y] == 0 { continue; }
 
-            let xel = Rect::new(x as i32, y as i32, CELL_SIZE, CELL_SIZE);
+            let pos_x = (x as u32) * CELL_SIZE;
+            let pos_y = (y as u32) * CELL_SIZE;
 
-            
+            let xel = Rect::new(pos_y  as i32, pos_x as i32, CELL_SIZE, CELL_SIZE);
+
+            _ = canvas.fill_rect(xel);
         }
     }
     
