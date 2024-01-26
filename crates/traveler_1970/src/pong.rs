@@ -13,8 +13,10 @@ use crate::pong::Stage::TITLE;
 const ATARI_WIDTH:u32= 160;
 const ATARI_HEIGHT:u32 = 192;
 
-const PONG_WIDTH:u32= 858;
-const PONG_HEIGHT:u32 = 525;
+const PONG_WIDTH:u32= 860;
+const PONG_HEIGHT:u32 = 530;
+
+const CELL_SIZE:u32 = 10;
 
 const TARGET_FRAME:u32 = 24;
 
@@ -22,6 +24,16 @@ enum Stage {
     TITLE,
     MAIN,
 }
+
+struct Screen;
+
+impl Screen {
+    const WIDTH : usize = (PONG_WIDTH / 10) as usize;
+    const HEIGHT : usize = (PONG_HEIGHT / 10) as usize;
+}
+
+//
+static MAP : [[u32; Screen::WIDTH]; Screen::HEIGHT] = [[0; Screen::WIDTH]; Screen::HEIGHT];
 
 struct Game {
     context : Sdl,
@@ -33,6 +45,7 @@ struct Round {
     left_score  : u32,
     right_score : u32,
 }
+
 
 fn init() -> Game {
     //env_logger::init();
@@ -116,6 +129,8 @@ fn game_loop(mut game : Game) {
     };
 
     'run: loop {
+        clear();
+
         for ev in event_pump.poll_iter() {
             match ev {
                 Event::Quit { timestamp } => { 
@@ -149,21 +164,47 @@ fn game_loop(mut game : Game) {
                         None => panic!("Failed to get key code!"),
                     };
 
+                    match game.stage {
+                        Stage::TITLE => title_update(code),
+                        Stage::MAIN => main_update(code),
+                    }
+
                     if code == Keycode::Left { println!("Left key pressed"); }
                 }
                 _ => { }
             }
         }
 
-        canvas.present();
+        draw(canvas);
     }
 }
 
 fn clear() {
+    
+}
 
+fn title_update(key : Keycode) {
+    
+}
+
+fn main_update(key : Keycode) {
+    
+}
+
+fn draw(canvas : &mut Canvas<Window>) {
+    for x in 0..Screen::WIDTH {
+        for y in 0..Screen::HEIGHT {
+            if MAP[x][y] == 0 { continue; }
+
+            let xel = Rect::new(x as i32, y as i32, CELL_SIZE, CELL_SIZE);
+
+            
+        }
+    }
+    
+    canvas.present();
 }
 
 pub fn entry() {
     game_loop(init());
-    clear();
 }
