@@ -35,6 +35,18 @@ impl Screen {
 //
 static MAP : [[u32; Screen::HEIGHT]; Screen::WIDTH] = [[1; Screen::HEIGHT]; Screen::WIDTH];
 
+// TITLE GRAPHIC
+// pong
+const TITLE_DRAW : Vec<(u32, u32)> = vec![
+    (0, 0), (1, 0), (2, 0), (0, 1), (2, 1), (0, 2), (1, 2), (2, 2), (0, 3), (0, 4), //p
+];
+
+const BAR_DRAW : Vec<(u32, u32)> = vec![
+    (0, 0), (0, 1), (0, 2), (0, 3)
+];
+
+//const BALL
+
 struct Game {
     context : Sdl,
     canvas : Canvas<Window>,
